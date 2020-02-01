@@ -1,0 +1,24 @@
+{
+  "name": "signalk-sk-trackmap",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "grafana-toolkit plugin:build",
+    "test": "grafana-toolkit plugin:test",
+    "dev": "grafana-toolkit plugin:dev",
+    "watchh": "grafana-toolkit plugin:dev --watch",
+    "watch": "concurrently --kill-others \"grafana-toolkit plugin:dev --watch\" \"docker run  --rm -p 3002:3000 -e \"GF_SECURITY_ADMIN_PASSWORD=secret\" -v `pwd`/../grafana-datasource:/var/lib/grafana/plugins/sk-datasource -v `pwd`:/var/lib/grafana/plugins/gtrackmap  -v `pwd`/:/etc/grafana/provisioning/datasources -v `pwd`/dashboards:/etc/grafana/provisioning/dashboards grafana/grafana:6.5.2\""
+  },
+  "author": "teppo.kurki@iki.fi",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@grafana/data": "next",
+    "@grafana/toolkit": "next",
+    "@grafana/ui": "next",
+    "@types/geojson": "^7946.0.7",
+    "@types/react-leaflet": "^2.5.0",
+    "concurrently": "^5.1.0",
+    "leaflet": "^1.6.0",
+    "react-leaflet": "^2.6.1"
+  }
+}
