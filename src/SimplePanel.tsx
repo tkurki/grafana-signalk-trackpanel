@@ -47,7 +47,7 @@ export class SimplePanel extends PureComponent<Props> {
           subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
         />
         <TileLayer url={'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'} minZoom={16} maxZoom={21} maxNativeZoom={18} />
-        <GeoJSON data={points} />
+        <GeoJSON key={Date.now()} data={points} />
       </LeafletMap>
     );
   }
