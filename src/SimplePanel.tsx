@@ -24,7 +24,6 @@ export class SimplePanel extends PureComponent<Props> {
     let maxLat = -90
     let minLng = 180
     let maxLng = -180
-    console.log('bheppp')
     const validatingBuffer = new ValidatingBuffer<any>((points: any[]) => {
       if (points.length === 3 && !points[1]) {
         return false
@@ -34,7 +33,6 @@ export class SimplePanel extends PureComponent<Props> {
       const secondLastDiff = Math.abs(points[1][1] + points[1][1] - points[2][0] - points[2][1])
       const threshold = firstLastDiff * 2
       const isValid =  firstSecondDiff < threshold && secondLastDiff < threshold
-      console.log(isValid)
       return isValid
     }, (point:any) => {
       minLat = Math.min(minLat, point[1])
