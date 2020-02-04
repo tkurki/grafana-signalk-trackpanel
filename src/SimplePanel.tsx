@@ -9,6 +9,7 @@ import { Map as LeafletMap, GeoJSON, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LineString } from 'geojson';
 import { LatLngBounds } from 'leaflet';
+import ValidatingBuffer from 'ValidatingBuffer';
 
 export class SimplePanel extends PureComponent<Props> {
   render() {
@@ -23,16 +24,29 @@ export class SimplePanel extends PureComponent<Props> {
     let maxLat = -90
     let minLng = 180
     let maxLng = -180
-    for (i = 0; i < positions.length; i++) {
-      const point = positions.get(i);
-      if (point !== null) {
-        minLat = Math.min(minLat, point[1])
-        minLng = Math.min(minLng, point[0])
-        maxLat = Math.max(maxLat, point[1])
-        maxLng = Math.max(maxLng, point[0])
-        points.coordinates.push(point);
+    console.log('bheppp')
+    const validatingBuffer = new ValidatingBuffer<any>((points: any[]) => {
+      if (points.length === 3 && !points[1]) {
+        return false
       }
+      const firstSecondDiff = Math.abs(points[0][1] + points[0][1] - points[1][0] - points[1][1])
+      const firstLastDiff = Math.abs(points[0][1] + points[0][1] - points[2][0] - points[2][1])
+      const secondLastDiff = Math.abs(points[1][1] + points[1][1] - points[2][0] - points[2][1])
+      const threshold = firstLastDiff * 2
+      const isValid =  firstSecondDiff < threshold && secondLastDiff < threshold
+      console.log(isValid)
+      return isValid
+    }, (point:any) => {
+      minLat = Math.min(minLat, point[1])
+      minLng = Math.min(minLng, point[0])
+      maxLat = Math.max(maxLat, point[1])
+      maxLng = Math.max(maxLng, point[0])
+      points.coordinates.push(point);
+    })
+    for (i = 0; i < positions.length; i++) {
+      validatingBuffer.push(positions.get(i));
     }
+    validatingBuffer.flush()
 
     const bounds = new LatLngBounds([minLat, minLng], [maxLat, maxLng])
     return (
